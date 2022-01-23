@@ -43,6 +43,7 @@ Resources:
       CallbackURLs:
         - https://example.com/callback
         - http://localhost:3000/callback
+        - https://main.d3kcu6syumq9qt.amplifyapp.com/callback
       AllowedOAuthFlowsUserPoolClient: true
       AllowedOAuthFlows:
         - code
@@ -81,7 +82,7 @@ Resources:
       Cors:
         AllowMethods: "'POST, GET, PUT, OPTIONS'"
         AllowHeaders: "'*'"
-        AllowOrigin: "'http://localhost:3000'"
+        AllowOrigin: "'http://localhost:3000, https://main.d3kcu6syumq9qt.amplifyapp.com'"
         MaxAge: "'600'"
         AllowCredentials: true
       Auth:
@@ -127,6 +128,7 @@ Resources:
               - PUT
             AllowedOrigins:
               - "http://localhost:3000"
+              - "https://main.d3kcu6syumq9qt.amplifyapp.com"
             Id: presignedUrlRule
             MaxAge: 3600
 
