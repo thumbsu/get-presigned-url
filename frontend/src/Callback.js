@@ -1,0 +1,59 @@
+import { useCallback, useEffect } from "react";
+
+import axios from "axios";
+import queryString from "query-string";
+import { useSearchParams } from "react-router-dom";
+
+function Callback() {
+  let [params] = useSearchParams();
+  const code = params.get("code");
+
+  const { REACT_APP_AUTHORIZE_ENDPOINT: authorize_endpoint, REACT_APP_CLIENT_ID: client_id, REACT_APP_REDIRECT_URI: redirect_uri, REACT_APP_SCOPE: scope } = process.env
+
+  const qs = queryString.stringify({
+    grant_type: "authorization_code",
+    code,
+    redirect_uri,
+    client_id,
+    scope
+  });
+
+  const getAccessToken = useCallback(async () => {
+    try {
+      const url = `${authorize_endpoint}/token`;
+      const {
+        data: { access_token, refresh_token }
+      } = await axios.post(url, qs, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      });
+
+      localStorage.setItem("access_token", access_token);
+      localStorage.setItem("refresh_token", refresh_token);
+
+      window.location.replace("/");
+    } catch (e) {
+      window.location.replace("/");
+    }
+  }, [authorize_endpoint, qs]);
+
+  useEffect(() => {
+    getAccessToken();
+  }, [getAccessToken]);
+
+  return (
+    <div style={{ display: "flex", justifyContent: "center", marginTop: 30 }}>
+      <div className="window" style={{ width: 300 }}>
+        <div className="title-bar">
+          <div className="title-bar-text">Processing...</div>
+        </div>
+        <div className="window-body">
+          <p>You are logging in... 😇</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Callback;
