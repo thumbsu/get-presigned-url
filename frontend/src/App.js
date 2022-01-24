@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+
 import Callback from "./Callback";
 import Home from "./Home";
 
@@ -7,7 +8,7 @@ function App() {
     <div>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/callback" element={<Callback />} />
+        <Route path="callback" element={<Callback />} />
       </Routes>
     </div>
   );
