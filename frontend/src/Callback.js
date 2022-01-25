@@ -1,14 +1,20 @@
 import { useCallback, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import axios from "axios";
 import queryString from "query-string";
-import { useSearchParams } from "react-router-dom";
 
 function Callback() {
   let [params] = useSearchParams();
+  const navigate = useNavigate();
   const code = params.get("code");
 
-  const { REACT_APP_AUTHORIZE_ENDPOINT: authorize_endpoint, REACT_APP_CLIENT_ID: client_id, REACT_APP_REDIRECT_URI: redirect_uri, REACT_APP_SCOPE: scope } = process.env
+  const {
+    REACT_APP_AUTHORIZE_ENDPOINT: authorize_endpoint,
+    REACT_APP_CLIENT_ID: client_id,
+    REACT_APP_REDIRECT_URI: redirect_uri,
+    REACT_APP_SCOPE: scope
+  } = process.env;
 
   const qs = queryString.stringify({
     grant_type: "authorization_code",
@@ -31,12 +37,11 @@ function Callback() {
 
       localStorage.setItem("access_token", access_token);
       localStorage.setItem("refresh_token", refresh_token);
-
-      window.location.replace("/");
     } catch (e) {
-      window.location.replace("/");
+      console.log(e);
     }
-  }, [authorize_endpoint, qs]);
+    navigate("/", { replace: true });
+  }, [authorize_endpoint, navigate, qs]);
 
   useEffect(() => {
     getAccessToken();
