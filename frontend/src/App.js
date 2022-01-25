@@ -7,9 +7,8 @@ function App() {
   return (
     <div>
       <Routes>
-        <Route exact path="/" element={<Home />}>
-          <Route path="callback" element={<Callback />} />
-        </Route>
+        <Route exact path="/" element={<Home />} />
+        <Route path="/callback" element={<Callback />} />
       </Routes>
     </div>
   );

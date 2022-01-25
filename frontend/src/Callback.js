@@ -7,7 +7,6 @@ import queryString from "query-string";
 function Callback() {
   let [params] = useSearchParams();
   const navigate = useNavigate();
-  const code = params.get("code");
 
   const {
     REACT_APP_AUTHORIZE_ENDPOINT: authorize_endpoint,
@@ -16,15 +15,15 @@ function Callback() {
     REACT_APP_SCOPE: scope
   } = process.env;
 
-  const qs = queryString.stringify({
-    grant_type: "authorization_code",
-    code,
-    redirect_uri,
-    client_id,
-    scope
-  });
-
   const getAccessToken = useCallback(async () => {
+    const code = params.get("code");
+    const qs = queryString.stringify({
+      grant_type: "authorization_code",
+      code,
+      redirect_uri,
+      client_id,
+      scope
+    });
     try {
       const url = `${authorize_endpoint}/token`;
       const {
@@ -41,7 +40,7 @@ function Callback() {
       console.log(e);
     }
     navigate("../", { replace: true });
-  }, [authorize_endpoint, navigate, qs]);
+  }, [authorize_endpoint, client_id, navigate, params, redirect_uri, scope]);
 
   useEffect(() => {
     getAccessToken();
