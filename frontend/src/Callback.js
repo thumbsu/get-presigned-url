@@ -40,7 +40,7 @@ function Callback() {
     } catch (e) {
       console.log(e);
     }
-    navigate("/", { replace: true });
+    navigate("../", { replace: true });
   }, [authorize_endpoint, navigate, qs]);
 
   useEffect(() => {
